@@ -1,0 +1,20 @@
+.product-new-page {
+    display    : flex;
+    align-items: flex-start;
+    gap        : 32px;
+    max-width  : 1300px;
+    margin     : 0 auto;
+    padding    : 32px 0 40px 0;
+    min-height : 600px;
+}
+
+.sidebar-col {
+    flex     : 0 0 240px;
+    max-width: 240px;
+    width    : 100%;
+}
+
+.content-col {
+    flex : 1 1 0%;
+    width: 0;
+}

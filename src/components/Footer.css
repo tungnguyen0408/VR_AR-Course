@@ -1,0 +1,44 @@
+.body {
+    overflow-x: hidden;
+    font-family: 'Cabin', sans-serif;
+}
+.footer {
+    margin-top: 30px;
+    background-color: #262626;
+    padding-top: 55px;
+    padding-bottom: 45px;
+    padding-left: 45px;
+    padding-right: 45px;
+    text-align: center;
+}
+.footer .items__footer {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 50px;
+}
+.footer .items__footer p {
+    letter-spacing: 1.3px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 15px;
+    color: #b0b0b0;
+}
+.footer .items__footer .item__title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+}
+.footer .items__footer p a, footer .items__footer p span {
+    color: #b0b0b0;
+}
+.footer .items__footer p a:link {
+    text-decoration: none;
+}
+.footer .items__footer p a:visited {
+    text-decoration: none;
+}
+.footer .items__footer p a:hover {
+    text-decoration: underline;
+}
