@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Footer from "../components/Footer";
+import userService from "../services/userService";
 import './Register.scss';
 
 const Register = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -17,21 +18,17 @@ const Register = () => {
       username: username,
       password: password,
       email: email,
+      phone: phone,
     };
+
     try {
-      const response = await axios.post(
-        "http://localhost:8080/user/create",
-        user
-      );
+      const response = await userService.create(user);
       if (response.status === 200) {
         window.alert("Đăng kí thành công");
-        navigate("/dang-nhap");
-
-        axios.post("http://localhost:8080/email/register", response.data.data);
-      } else {
-        window.alert("that bai");
-      }
+        navigate("/dang-nhap-tai-khoan");
+      } 
     } catch (error) {
+      console.error("Lỗi:", error);
       window.alert("that bai");
     }
   };
@@ -65,11 +62,12 @@ const Register = () => {
             </div>
             <div className="register-field">
               <label>Số điện thoại</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Số điện thoại"
-              />
+             <input
+              className="form-control"
+              type="text"
+              placeholder="Số điện thoại"
+              onChange={(e) => setPhone(e.target.value)}
+            />
             </div>
           </div>
           <div className="register-row">

@@ -8,6 +8,8 @@ import './Header.scss';
 
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const { setSearchTerm } = useContext(SearchContext);
   const { user, number } = useContext(UserContext);
   const navigate = useNavigate();
@@ -22,8 +24,18 @@ function Header() {
     setIsLogin(false);
     navigate("/dang-nhap");
   };
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      setSearchTerm(searchInput);
+      navigate(`/kham-pha?q=${encodeURIComponent(searchInput)}`);
+      setShowSearch(false);
+      setSearchInput("");
+    }
+  };
+
+  const handleSearchClick = () => {
+    navigate('/kham-pha');
   };
 
   return (
@@ -52,7 +64,7 @@ function Header() {
           </li>
           <li className="header-dropdown" style={{ padding: "0 14px" }}>
             <span className="header-dropdown-toggle" style={{ color: "#c41a12", fontWeight: 500, fontSize: 16 }}>
-              <Link to="/giay-nam" style={{ color: '#c41a12', fontWeight: 500, fontSize: 16, textDecoration: 'none', display: 'inline-block' }}>NAM</Link> <span className="header-dropdown-arrow">▼</span>
+              <Link to="/san-pham-nam" style={{ color: '#c41a12', fontWeight: 500, fontSize: 16, textDecoration: 'none', display: 'inline-block' }}>NAM</Link> <span className="header-dropdown-arrow">▼</span>
             </span>
             <ul className="header-dropdown-menu">
               <li><Link to="#">My Shoes</Link></li>
@@ -63,7 +75,7 @@ function Header() {
           </li>
           <li className="header-dropdown" style={{ padding: "0 14px" }}>
             <span className="header-dropdown-toggle" style={{ color: "#c41a12", fontWeight: 500, fontSize: 16 }}>
-              <Link to="/giay-nu" style={{ color: '#c41a12', fontWeight: 500, fontSize: 16, textDecoration: 'none', display: 'inline-block' }}>NỮ</Link> <span className="header-dropdown-arrow">▼</span>
+              <Link to="/san-pham-nu" style={{ color: '#c41a12', fontWeight: 500, fontSize: 16, textDecoration: 'none', display: 'inline-block' }}>NỮ</Link> <span className="header-dropdown-arrow">▼</span>
             </span>
             <ul className="header-dropdown-menu">
               <li><Link to="#">My Shoes</Link></li>
@@ -92,10 +104,12 @@ function Header() {
       {/* Icon bên phải */}
       <div style={{ flex: 2, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 30, paddingRight: 40 }}>
         {/* Tìm kiếm */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <i className="fa-solid fa-magnifying-glass" style={{ color: "#fff", fontSize: 22 }}></i>
-          <span style={{ color: "#fff", fontSize: 14, marginTop: 2 }}>Tìm kiếm</span>
-        </div>
+        <Link to="/kham-pha" style={{ textDecoration: "none" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <i className="fa-solid fa-magnifying-glass" style={{ color: "#fff", fontSize: 22 }}></i>
+            <span style={{ color: "#fff", fontSize: 14, marginTop: 2 }}>Tìm kiếm</span>
+          </div>
+        </Link>
         {/* Giỏ hàng */}
         <Link to="/gio-hang" style={{ textDecoration: "none" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
@@ -126,10 +140,10 @@ function Header() {
           <span style={{ color: "#fff", fontSize: 14, marginTop: 2 }}>Tài khoản</span>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li>
-              <Link className="dropdown-item" to="/tai-khoan">Tài khoản</Link>
+              <Link className="dropdown-item" to="/tai-khoan-ca-nhan">Tài khoản</Link>
             </li>
             <li>
-              <Link className="dropdown-item" to="/lich-su">Lịch sử mua hàng</Link>
+              <Link className="dropdown-item" to="/lich-su-mua-hang">Lịch sử mua hàng</Link>
             </li>
             {isLogin ? (
               <li>
@@ -137,7 +151,7 @@ function Header() {
               </li>
             ) : (
               <li>
-                <Link className="dropdown-item" to="/dang-nhap">Đăng nhập</Link>
+                <Link className="dropdown-item" to="/dang-nhap-tai-khoan">Đăng nhập</Link>
               </li>
             )}
           </ul>

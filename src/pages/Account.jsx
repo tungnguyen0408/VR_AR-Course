@@ -99,7 +99,7 @@ const Account = () => {
         <div className="mt-3">
           <button
             type="button"
-            class="btn btn-danger"
+            className="btn btn-danger"
             onClick={() => updateUser()}
           >
             Lưu

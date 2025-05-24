@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Footer from "../components/Footer";
+import authService from "../services/authService";
 import './Login.scss';
 
 const Login = () => {
@@ -17,13 +16,7 @@ const Login = () => {
       password: password,
     };
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/login",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await authService.login(user);
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.data));
@@ -76,7 +69,7 @@ const Login = () => {
               Đăng nhập ngay
             </button>
             <span className="login-register-link">
-              Chưa có tài khoản, hãy <Link to="/dang-ky">Đăng ký</Link>
+              Chưa có tài khoản, hãy <Link to="/dang-ky-tai-khoan">Đăng ký</Link>
             </span>
           </div>
         </form>

@@ -2,12 +2,25 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import axios from "../config/config-axios";
 import Footer from "../components/Footer";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const History = () => {
   const [order, setOrder] = useState([]);
   const [status, setStatus] = useState("");
   const userId = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).id
     : null;
+  const [banners, setBanners] = useState([
+    // Thay bằng API nếu có
+    { id: 1, image: "/images/banner1.jpg" },
+    { id: 2, image: "/images/banner2.jpg" },
+    { id: 3, image: "/images/banner3.jpg" },
+  ]);
+  const [bestsellers, setBestsellers] = useState([]);
+  const [saleProducts, setSaleProducts] = useState([]);
+
   useEffect(() => {
     const fetchOrder = async () => {
       if (userId) {
@@ -28,8 +41,6 @@ const History = () => {
   };
   return (
     <div>
-      <Header></Header>
-
       <div className="container mt-3 ">
         <div
           className="div w-100 d-flex bg-light align-items-center ps-5"
@@ -68,7 +79,7 @@ const History = () => {
           style={{ height: "50px", border: "2px " }}
         >
           <div className="div ms-3">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
           <input
             className="border-0 bg-light"
@@ -132,7 +143,6 @@ const History = () => {
           ))}
         </div>
       </div>
-      <Footer></Footer>
     </div>
   );
 };

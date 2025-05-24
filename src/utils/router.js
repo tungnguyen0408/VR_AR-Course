@@ -1,0 +1,18 @@
+export const ROUTER = {
+  USER: {
+    HOME: "/",
+    PRODUCT_NEW: "san-pham-moi",
+    MALE: "san-pham-nam",
+    FEMALE: "san-pham-nu",
+    PRODUCT_DETAIL: "chi-tiet-san-pham/:id",
+    BEST_SELLER: "san-pham-ban-chay",
+    SHOPPING_CART: "gio-hang",
+    SHOP_DETAIL: "cua-hang",
+    ACCOUNT: "tai-khoan",
+    CONTACT: "lien-he",
+    DISCOVER: "kham-pha",
+    LOGIN_ACCOUNT: "dang-nhap-tai-khoan",
+    REGISTER_ACCOUNT: "dang-ky-tai-khoan",
+    HISTORY_PURCHASE: "lich-su-mua-hang",
+  },
+};

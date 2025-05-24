@@ -1,24 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './SidebarCategory.scss';
 
 const categories = [
-  { name: "Tất cả sản phẩm", count: 40 },
-  { name: "Sản phẩm mới", count: 14, active: true },
-  { name: "Sản phẩm khuyến mãi", count: 18 },
-  { name: "Sản phẩm nổi bật", count: 19 },
-  { name: "Giày dép Nam", count: 16 },
-  { name: "Giày dép Nữ", count: 27 },
-  {
-    name: "Crown UK",
-    count: 11,
-    children: ["Crown UK 1", "Crown UK 2"],
-  },
-  { name: "New Balance", count: 9 },
-  { name: "Fresh Foam", count: 7 },
-  { name: "My Shoes", count: 11 },
-  { name: "Phụ kiện", count: 8 },
+  { name: "Tất cả sản phẩm", count: 40, path: "tat-ca" },
+  { name: "Sản phẩm mới", count: 14, path: "moi" },
+  { name: "Sản phẩm khuyến mãi", count: 18, path: "khuyen-mai" },
+  { name: "Sản phẩm nổi bật", count: 19, path: "noi-bat" },
+  { name: "Giày dép Nam", count: 16, path: "giay-nam" },
+  { name: "Giày dép Nữ", count: 27, path: "giay-nu" },
+  { name: "Phụ kiện", count: 8, path: "phu-kien" }
 ];
-
 function Chevron({ open }) {
   return (
     <span className={`sidebar-chevron${open ? ' open' : ''}`}>
@@ -38,22 +30,32 @@ function Chevron({ open }) {
 
 function SidebarCategory() {
   const [open, setOpen] = useState({});
+  const navigate = useNavigate();
+
   const handleToggle = (name) => {
     setOpen((prev) => ({ ...prev, [name]: !prev[name] }));
   };
+
+const handleClick = (cat) => {
+  if (cat.children) {
+    handleToggle(cat.name);
+  } else if (cat.path) {
+    navigate(`/products/${cat.path}`);
+  }
+};
   return (
     <div className="sidebar-category">
       <h2 className="sidebar-title">DANH MỤC</h2>
       <ul className="sidebar-list">
-        {categories.map((cat, idx) => (
+        {categories.map((cat) => (
           <li
             key={cat.name}
             className={`sidebar-item${cat.active ? " active" : ""}`}
           >
             <div
               className="sidebar-link"
-              onClick={() => cat.children && handleToggle(cat.name)}
-              style={{ cursor: cat.children ? "pointer" : "default" }}
+              onClick={() => handleClick(cat)}
+              style={{ cursor: cat.children || cat.path ? "pointer" : "default" }}
             >
               <span>{cat.name}</span>
               <span style={{ color: cat.active ? "#e41b13" : "#888", marginLeft: 6 }}>
@@ -63,10 +65,19 @@ function SidebarCategory() {
                 <Chevron open={open[cat.name]} />
               )}
             </div>
+
+            {/* Submenu cho children */}
             {cat.children && open[cat.name] && (
               <ul className="sidebar-sublist">
-                {cat.children.map((sub, i) => (
-                  <li key={sub} className="sidebar-subitem">{sub}</li>
+                {cat.children.map((sub) => (
+                  <li
+                    key={sub}
+                    className="sidebar-subitem"
+                    onClick={() => navigate(`${cat.path}/${sub.toLowerCase().replace(/\s+/g, '-')}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {sub}
+                  </li>
                 ))}
               </ul>
             )}
@@ -77,4 +88,4 @@ function SidebarCategory() {
   );
 }
 
-export default SidebarCategory; 
+export default SidebarCategory;

@@ -34,7 +34,6 @@ function Chevron({ open }) {
 function SidebarFilter() {
   const [maxPrice, setMaxPrice] = useState(10000000);
   const [open, setOpen] = useState({
-    type: true,
     brand: true,
     price: true,
     color: true,
@@ -45,18 +44,6 @@ function SidebarFilter() {
   return (
     <div className="sidebar-filter">
       <h2 className="filter-title">BỘ LỌC</h2>
-      {/* Loại */}
-      <div className="filter-group">
-        <div className="filter-group-title" onClick={() => toggle('type')} style={{cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-          <span>LOẠI</span>
-          <Chevron open={open.type} />
-        </div>
-        {open.type && types.map(type => (
-          <label key={type} className="filter-checkbox">
-            <input type="checkbox" /> {type}
-          </label>
-        ))}
-      </div>
       {/* Thương hiệu */}
       <div className="filter-group">
         <div className="filter-group-title" onClick={() => toggle('brand')} style={{cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'space-between'}}>

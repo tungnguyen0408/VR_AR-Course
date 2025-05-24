@@ -5,10 +5,10 @@ import anh2 from "../assets/logo-VNPAY-QR.png";
 const Footer = () => {
   return (
     <div>
-      <div class="row footer m-3 mt-5 ">
-        <div class="col-sm-3">
-          <div class="items__footer">
-            <p class="item__title">
+      <div className="row footer m-3 mt-5 ">
+        <div className="col-sm-3">
+          <div className="items__footer">
+            <p className="item__title">
               CÔNG TY CỔ PHẦN THƯƠNG MẠI ĐỨC PHỨC HOLDINGS
             </p>
             <p>
@@ -39,9 +39,9 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="items__footer">
-            <p class="item__title">Dịch Vụ và Hỗ Trợ</p>
+        <div className="col-sm-3">
+          <div className="items__footer">
+            <p className="item__title">Dịch Vụ và Hỗ Trợ</p>
             <p>
               <a href=""></a>
             </p>
@@ -65,9 +65,9 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="items__footer">
-            <p class="item__title">Theo dõi chúng tôi</p>
+        <div className="col-sm-3">
+          <div className="items__footer">
+            <p className="item__title">Theo dõi chúng tôi</p>
             <p>
               <a href="">Facebook</a>
             </p>
@@ -79,9 +79,9 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="items__footer">
-            <p class="item__title">Chứng nhận</p>
+        <div className="col-sm-3">
+          <div className="items__footer">
+            <p className="item__title">Chứng nhận</p>
             <p>
               <a href="" previewlistener="true" target="_blank">
                 <img width="200" src={anh1} />

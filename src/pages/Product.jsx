@@ -115,11 +115,11 @@ const Product = () => {
                   <span style={{ fontWeight: "bold" }}>4.9</span>
                 </div>
                 <div className="div">
-                  <i class="fa-solid fa-star " style={{ color: "red" }}></i>
-                  <i class="fa-solid fa-star" style={{ color: "red" }}></i>
-                  <i class="fa-solid fa-star" style={{ color: "red" }}></i>
-                  <i class="fa-solid fa-star" style={{ color: "red" }}></i>
-                  <i class="fa-solid fa-star" style={{ color: "red" }}></i>
+                  <i className="fa-solid fa-star " style={{ color: "red" }}></i>
+                  <i className="fa-solid fa-star" style={{ color: "red" }}></i>
+                  <i className="fa-solid fa-star" style={{ color: "red" }}></i>
+                  <i className="fa-solid fa-star" style={{ color: "red" }}></i>
+                  <i className="fa-solid fa-star" style={{ color: "red" }}></i>
                 </div>
               </div>
               <div className="div me-3">
@@ -146,7 +146,7 @@ const Product = () => {
             </div>
             <div className="deliver d-flex">
               <div className="div me-2">
-                <i class="fa-solid fa-truck"></i>
+                <i className="fa-solid fa-truck"></i>
               </div>
               <div
                 className="div"
@@ -192,7 +192,7 @@ const Product = () => {
                   }}
                   onClick={() => down()}
                 >
-                  <i class="fa-solid fa-minus"></i>
+                  <i className="fa-solid fa-minus"></i>
                 </button>
                 <div
                   className="div justify-content-center align-items-center p-2 ps-3"
@@ -212,7 +212,7 @@ const Product = () => {
                   }}
                   onClick={() => up()}
                 >
-                  <i class="fa-solid fa-plus"></i>
+                  <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
             </div>
@@ -223,7 +223,7 @@ const Product = () => {
                     className="btn btn-danger "
                     onClick={() => addToCart()}
                   >
-                    <i class="fa-solid fa-cart-arrow-down me-1"></i>
+                    <i className="fa-solid fa-cart-arrow-down me-1"></i>
                     Thêm vào giỏ hàng
                   </button>
                 </div>

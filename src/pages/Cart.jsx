@@ -1,31 +1,34 @@
 import React, { useState, useEffect, useContext } from "react";
-import Header from "../components/Header";
-import axios from "../config/config-axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/ContextUser";
-import Footer from "../components/Footer";
+import axios from "../config/config-axios";
+import cartService from "../services/cartService";
+import './Cart.scss';
+
 const Cart = () => {
   const { user } = useContext(UserContext);
-  const [product, setProduct] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]); // Lưu các sản phẩm được chọn
+  const [products, setProducts] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchCart = async () => {
-      if (user && user.id) {
-        try {
-          const response = await axios.get(
-            `http://localhost:8080/cart/get/${user.id}`
-          );
-          setProduct(response.data.data || []);
-        } catch (error) {
-          console.error("Error fetching cart:", error);
-        }
-      }
-    };
-    fetchCart();
-  }, [user]);
 
-  // Hàm xử lý khi thay đổi checkbox
+useEffect(() => {
+  const fetchCart = async () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const userId = userData?.id;
+
+    if (userId) {
+      try {
+        const response = await cartService.getByUser(userId);
+        setProducts(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    }
+  };
+  fetchCart();
+}, []);
+
+
   const handleCheckboxChange = (item) => {
     const isSelected = selectedProducts.some(
       (selectedItem) => selectedItem.id === item.id
@@ -39,155 +42,148 @@ const Cart = () => {
       setSelectedProducts((prevSelected) => [...prevSelected, item]);
     }
   };
-  // Hàm tăng số lượng
-  const up = (index) => {
-    const updatedProducts = [...product];
-    updatedProducts[index].quantity += 1;
-    setProduct(updatedProducts);
-  };
-  // Hàm giảm số lượng
-  const down = (index) => {
-    const updatedProducts = [...product];
-    if (updatedProducts[index].quantity > 1) {
-      updatedProducts[index].quantity -= 1;
-      setProduct(updatedProducts);
+
+  const updateQuantity = async (index, newQuantity) => {
+    if (newQuantity < 1) return;
+    
+    const updatedProducts = [...products];
+    updatedProducts[index].quantity = newQuantity;
+    setProducts(updatedProducts);
+
+    try {
+      await cartService.update(updatedProducts[index].id, { quantity: newQuantity });
+    } catch (error) {
+      console.error("Error updating quantity:", error);
     }
   };
-  // Xóa sản phẩm trong giỏ hàng
+
   const deleteCart = async (id) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa");
+    const confirmDelete = window.confirm("Are you sure you want to remove this item?");
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:8080/cart/delete/${id}`);
-        window.location.reload();
+      await cartService.delete(id);
+
+        setProducts(products.filter(item => item.id !== id));
       } catch (error) {
-        console.log(error);
+        console.error("Error deleting item:", error);
       }
     }
   };
 
-  // Chuyển đến trang thanh toán với các sản phẩm đã chọn
   const handleCheckout = () => {
     navigate("/dat-hang", { state: { selectedProducts } });
   };
-  return (
-    <div>
-      <Header />
-      <div className="container mt-3">
-        <div
-          className="row ms-5 d-flex justify-content-center align-items-center bg-light"
-          style={{ height: "50px" }}
-        >
-          <div className="div col-5 ps-5">Sản phẩm</div>
-          <div className="div col-2">Giá</div>
-          <div className="div col-2">Số lượng</div>
-          <div className="div col-2">Tổng</div>
-          <div className="div col-1">Thao tác</div>
-        </div>
 
-        {product.length > 0 ? (
-          product.map((item, index) => (
-            <div
-              key={index}
-              className="row ms-5 d-flex justify-content-center align-items-center bg-light mt-4"
-            >
-              <div className="row col-5 align-items-center">
-                <div className="div col-8 d-flex align-items-center">
-                  <div className="div">
+  const calculateTotal = () => {
+    return selectedProducts.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
+    }, 0);
+  };
+
+  return (
+    <div className="cart-page">
+      <div className="cart-container">
+        <h1 className="cart-title">Giỏ hàng</h1>
+        
+        {products.length > 0 ? (
+          <>
+            <div className="cart-header">
+              <div className="cart-header-item product">Product</div>
+              <div className="cart-header-item price">Price</div>
+              <div className="cart-header-item quantity">Quantity</div>
+              <div className="cart-header-item total">Total</div>
+              <div className="cart-header-item action">Action</div>
+            </div>
+
+            <div className="cart-items">
+              {products.map((item, index) => (
+                <div key={index} className="cart-item">
+                  <div className="cart-item-product">
                     <input
-                      className="form-check-input"
                       type="checkbox"
-                      onChange={() => handleCheckboxChange(item)} // Cập nhật khi thay đổi checkbox
+                      className="cart-checkbox"
                       checked={selectedProducts.some(
                         (selectedItem) => selectedItem.id === item.id
                       )}
+                      onChange={() => handleCheckboxChange(item)}
                     />
-                  </div>
-                  <div className="div ms-4 d-flex align-items-center">
-                    <div className="div mt-2 mb-2">
-                      <img
-                        src={item.product.image_url}
-                        alt=""
-                        style={{ width: "120px", height: "120px" }}
-                      />
+                    <img src={item.product.image_url} alt={item.product.name} />
+                    <div className="product-info">
+                      <h3>{item.product.name}</h3>
+                      <p className="size">Size: {item.size}</p>
                     </div>
-                    <div className="div ms-3" style={{ width: "150px" }}>
-                      <p>{item.product.name}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="div col-2">Size: {item.size}</div>
-              </div>
-              <div className="div col-2">
-                {item.product.price.toLocaleString("vi-VN")} đ
-              </div>
-              <div className="div col-2">
-                <div className="div ms-2 d-flex">
-                  <button
-                    className="btn btn-light"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                    }}
-                    onClick={() => down(index)}
-                  >
-                    <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <div
-                    className="div justify-content-center align-items-center p-2 ps-3"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      background: "white",
-                      border: "1px",
-                    }}
-                  >
-                    <span>{item.quantity}</span>
                   </div>
 
-                  <button
-                    className="btn btn-light"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                    }}
-                    onClick={() => up(index)}
-                  >
-                    <i className="fa-solid fa-plus"></i>
-                  </button>
+                  <div className="cart-item-price">
+                    {item.product.price.toLocaleString("vi-VN")} đ
+                  </div>
+
+                  <div className="cart-item-quantity">
+                    <button 
+                      className="quantity-btn"
+                      onClick={() => updateQuantity(index, item.quantity - 1)}
+                    >
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                    <span className="quantity-number">{item.quantity}</span>
+                    <button 
+                      className="quantity-btn"
+                      onClick={() => updateQuantity(index, item.quantity + 1)}
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+
+                  <div className="cart-item-total">
+                    {(item.product.price * item.quantity).toLocaleString("vi-VN")} đ
+                  </div>
+
+                  <div className="cart-item-action">
+                    <button 
+                      className="delete-btn"
+                      onClick={() => deleteCart(item.id)}
+                    >
+                      <i className="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="div col-2">
-                {(item.product.price * item.quantity).toLocaleString("vi-VN")} đ
-              </div>
-              <div className="div col-1">
-                <button
-                  className="border-0 bg-transparent ms-1"
-                  onClick={() => deleteCart(item.id)}
-                >
-                  <i className="fa-solid fa-trash-can fa-lg"></i>
-                </button>
-              </div>
+              ))}
             </div>
-          ))
-        ) : (
-          <p className="mt-4" style={{ marginLeft: "600px", fontSize: "24px" }}>
-            Giỏ hàng trống
-          </p>
-        )}
 
-        {/* Nút chuyển đến trang thanh toán */}
-        <button
-          className="btn btn-primary mt-5"
-          onClick={handleCheckout}
-          disabled={selectedProducts.length === 0}
-          hidden={product.length === 0}
-          style={{ marginLeft: "600px" }}
-        >
-          Thanh toán
-        </button>
+            <div className="cart-summary">
+              <div className="summary-details">
+                <div className="summary-row">
+                  <span>Selected Items:</span>
+                  <span>{selectedProducts.length}</span>
+                </div>
+                <div className="summary-row total">
+                  <span>Total Amount:</span>
+                  <span>{calculateTotal().toLocaleString("vi-VN")} đ</span>
+                </div>
+              </div>
+              <button
+                className="checkout-btn"
+                onClick={handleCheckout}
+                disabled={selectedProducts.length === 0}
+              >
+                Proceed to Checkout
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="empty-cart">
+            <i className="fa-solid fa-cart-shopping"></i>
+            <h2>Giỏ hàng trống</h2>
+            <p>Bạn chưa thêm sản phẩm nào vào giỏ hàng!.</p>
+            <button 
+              className="continue-shopping-btn"
+              onClick={() => navigate('/')}
+            >
+              Tiếp tục mua hàng
+            </button>
+          </div>
+        )}
       </div>
-      <Footer></Footer>
     </div>
   );
 };

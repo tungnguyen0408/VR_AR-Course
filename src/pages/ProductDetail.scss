@@ -55,6 +55,16 @@
     display   : flex;
     gap       : 12px;
     margin-top: 18px;
+
+    .no-images {
+        color        : #666;
+        font-size    : 14px;
+        padding      : 10px;
+        background   : #f5f5f5;
+        border-radius: 6px;
+        width        : 100%;
+        text-align   : center;
+    }
 }
 
 .thumbnail {

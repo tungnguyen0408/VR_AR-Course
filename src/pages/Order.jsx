@@ -110,7 +110,7 @@ const Order = () => {
               className="div d-flex align-items-center "
               style={{ gap: "8px", fontSize: "20px" }}
             >
-              <i class="fa-solid fa-location-dot"></i>
+              <i className="fa-solid fa-location-dot"></i>
               <span>Địa chỉ nhận hàng</span>
             </div>
             <div className="div mt-3">
@@ -205,7 +205,7 @@ const Order = () => {
             <div className="pay">
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 onClick={() => payment(orderId)}
               >
                 Đặt hàng

@@ -1,0 +1,167 @@
+.discover-page {
+    min-height      : 100vh;
+    background-color: #f8f9fa;
+    padding         : 2rem;
+
+    .discover-hero {
+        text-align   : center;
+        padding      : 4rem 0;
+        background   : linear-gradient(135deg, #e41b13 0%, #c41a12 100%);
+        color        : white;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size    : 3rem;
+            font-weight  : 700;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.2rem;
+            opacity  : 0.9;
+        }
+    }
+
+    .discover-controls {
+        background   : white;
+        padding      : 1.5rem;
+        border-radius: 1rem;
+        box-shadow   : 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+
+        .search-form {
+            display      : flex;
+            gap          : 1rem;
+            margin-bottom: 1.5rem;
+
+            .search-input {
+                flex         : 1;
+                padding      : 0.8rem 1.2rem;
+                border       : 2px solid #eee;
+                border-radius: 0.5rem;
+                font-size    : 1rem;
+                transition   : all 0.3s ease;
+
+                &:focus {
+                    border-color: #e41b13;
+                    outline     : none;
+                }
+            }
+
+            .search-button {
+                padding      : 0.8rem 1.5rem;
+                background   : #e41b13;
+                color        : white;
+                border       : none;
+                border-radius: 0.5rem;
+                cursor       : pointer;
+                transition   : background 0.3s ease;
+
+                &:hover {
+                    background: #c41a12;
+                }
+            }
+        }
+
+        .filters {
+            display  : flex;
+            gap      : 1rem;
+            flex-wrap: wrap;
+
+            .filter-select {
+                padding      : 0.8rem 1.2rem;
+                border       : 2px solid #eee;
+                border-radius: 0.5rem;
+                font-size    : 1rem;
+                background   : white;
+                cursor       : pointer;
+                transition   : all 0.3s ease;
+
+                &:focus {
+                    border-color: #e41b13;
+                    outline     : none;
+                }
+            }
+        }
+    }
+
+    .discover-results {
+        .results-header {
+            margin-bottom: 2rem;
+
+            h2 {
+                font-size: 1.5rem;
+                color    : #333;
+            }
+        }
+
+        .products-grid {
+            display              : grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap                  : 2rem;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding   : 3rem;
+            color     : #666;
+
+            i {
+                font-size    : 2rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .no-results {
+            grid-column  : 1 / -1;
+            text-align   : center;
+            padding      : 4rem;
+            background   : white;
+            border-radius: 1rem;
+            box-shadow   : 0 2px 10px rgba(0, 0, 0, 0.05);
+
+            i {
+                font-size    : 3rem;
+                color        : #e41b13;
+                margin-bottom: 1rem;
+            }
+
+            h3 {
+                font-size    : 1.5rem;
+                color        : #333;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: #666;
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .discover-page {
+        padding: 1rem;
+
+        .discover-hero {
+            padding: 2rem 0;
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .discover-controls {
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap                  : 1rem;
+        }
+    }
+}

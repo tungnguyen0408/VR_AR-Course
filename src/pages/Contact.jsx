@@ -5,7 +5,6 @@ import Footer from '../components/Footer';
 function Contact() {
   return (
     <>
-    <Header></Header>
     <div className="contact-page">
       <div className="contact-breadcrumb">
         <span>Trang chủ</span> <span style={{color:'#888'}}>&gt;</span> <span style={{color:'#e41b13'}}>Liên hệ</span>
@@ -40,7 +39,6 @@ function Contact() {
         </div>
       </div>
     </div>
-    <Footer></Footer>
     </>
   );
 }
