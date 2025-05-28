@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import productApi from '../services/productService';
-import ProductCard from '../components/ProductCard';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import productApi from "../services/productService";
+import ProductCard from "../components/ProductCard";
 import "../pages/Discover.scss";
 
 const Discover = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
   const [filters, setFilters] = useState({
-    gender: '',
-    priceRange: '',
-    sortBy: 'newest'
+    gender: "",
+    priceRange: "",
+    sortBy: "newest",
   });
 
   useEffect(() => {
@@ -24,37 +24,42 @@ const Discover = () => {
 
         // Apply search filter
         if (searchTerm) {
-          filteredProducts = filteredProducts.filter(product => 
-            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.description.toLowerCase().includes(searchTerm.toLowerCase())
+          filteredProducts = filteredProducts.filter(
+            (product) =>
+              product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              product.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
           );
         }
 
         // Apply gender filter
         if (filters.gender) {
-          filteredProducts = filteredProducts.filter(product => 
-            product.gender === filters.gender
+          filteredProducts = filteredProducts.filter(
+            (product) => product.gender === filters.gender
           );
         }
 
         // Apply price range filter
         if (filters.priceRange) {
-          const [min, max] = filters.priceRange.split('-').map(Number);
-          filteredProducts = filteredProducts.filter(product => 
-            product.price >= min && product.price <= max
+          const [min, max] = filters.priceRange.split("-").map(Number);
+          filteredProducts = filteredProducts.filter(
+            (product) => product.price >= min && product.price <= max
           );
         }
 
         // Apply sorting
         switch (filters.sortBy) {
-          case 'price-asc':
+          case "price-asc":
             filteredProducts.sort((a, b) => a.price - b.price);
             break;
-          case 'price-desc':
+          case "price-desc":
             filteredProducts.sort((a, b) => b.price - a.price);
             break;
-          case 'newest':
-            filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          case "newest":
+            filteredProducts.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
             break;
           default:
             break;
@@ -62,7 +67,7 @@ const Discover = () => {
 
         setProducts(filteredProducts);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
       setLoading(false);
     };
@@ -76,9 +81,9 @@ const Discover = () => {
   };
 
   const handleFilterChange = (type, value) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [type]: value
+      [type]: value,
     }));
   };
 
@@ -97,7 +102,7 @@ const Discover = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for shoes..."
+            placeholder="Tìm giày phù hợp với bạn..."
             className="search-input"
           />
           <button type="submit" className="search-button">
@@ -106,9 +111,9 @@ const Discover = () => {
         </form>
 
         <div className="filters">
-          <select 
-            value={filters.gender} 
-            onChange={(e) => handleFilterChange('gender', e.target.value)}
+          <select
+            value={filters.gender}
+            onChange={(e) => handleFilterChange("gender", e.target.value)}
             className="filter-select"
           >
             <option value="">Tất cả giới tính</option>
@@ -116,9 +121,9 @@ const Discover = () => {
             <option value="female">Phụ nữ</option>
           </select>
 
-          <select 
-            value={filters.priceRange} 
-            onChange={(e) => handleFilterChange('priceRange', e.target.value)}
+          <select
+            value={filters.priceRange}
+            onChange={(e) => handleFilterChange("priceRange", e.target.value)}
             className="filter-select"
           >
             <option value="">Tất cả các mức giá</option>
@@ -128,9 +133,9 @@ const Discover = () => {
             <option value="300-1000">Trên 3000.000đ</option>
           </select>
 
-          <select 
-            value={filters.sortBy} 
-            onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+          <select
+            value={filters.sortBy}
+            onChange={(e) => handleFilterChange("sortBy", e.target.value)}
             className="filter-select"
           >
             <option value="newest">Mới nhất</option>

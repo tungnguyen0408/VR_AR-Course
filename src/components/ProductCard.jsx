@@ -1,13 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import cartService from '../services/cartService';
 import './ProductCard.scss';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
-    alert(`Đã thêm ${product.name} vào giỏ hàng!`);
+    
+    if (!userData.id) {
+      alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
+      navigate('/dang-nhap');
+      return;
+    }
+
+    // Chuyển hướng đến trang chi tiết để chọn variant
+    navigate(`/chi-tiet-san-pham/${product.id}`);
   };
 
   const handleViewDetail = () => {

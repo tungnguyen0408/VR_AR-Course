@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import History from "./pages/History";
 import ProductNew from "./pages/ProductNew";
 import Discover from "./pages/Discover";
+import ProductByType from "./pages/ProductByType";
 
 const renderUserRouter = () => {
   const userRouters = [
@@ -40,7 +41,7 @@ const renderUserRouter = () => {
     },
     {
       path: ROUTER.USER.BEST_SELLER,
-      component: <BestSeller />,
+      component: <ProductByType type="bestseller" />,
     },
     {
       path: ROUTER.USER.SHOPPING_CART,
@@ -77,6 +78,14 @@ const renderUserRouter = () => {
     {
       path: ROUTER.USER.PRODUCT_DETAIL,
       component: <ProductDetail />,
+    },
+    {
+      path: ROUTER.USER.DISCOUNTED,
+      component: <ProductByType type="discounted" />,
+    },
+    {
+      path: ROUTER.USER.ALL_PRODUCT,
+      component: <ProductByType type="all" />,
     },
   ];
 

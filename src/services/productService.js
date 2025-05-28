@@ -2,8 +2,8 @@ import axiosClient from "./axiosClient";
 
 const productApi = {
   // Lấy danh sách sản phẩm
-  getAll: () => {
-    const url = "/products";
+  getAll: (page, size) => {
+    const url = `/products/all?page=${page}&size=${size}`;
     return axiosClient.get(url);
   },
 
@@ -11,6 +11,11 @@ const productApi = {
   getById: (id) => {
     const url = `/products/${id}`;
     return axiosClient.get(url);
+  },
+
+  filterProducts: (filters, page = 0, size = 10) => {
+    const url = `/products/filter?page=${page}&size=${size}`;
+    return axiosClient.post(url, filters);
   },
 
   // Lấy sản phẩm theo giới tính
@@ -31,11 +36,10 @@ const productApi = {
     return axiosClient.post(url, data);
   },
 
-  // Cập nhật thông tin sản phẩm
-  // update: (data) => {
-  //   const url = `/products/${data.id}`;
-  //   return axiosClient.patch(url, data);
-  // },
+  filterProducts: (filters, page, size) => {
+    const url = `/products/filter?page=${page}&size=${size}`;
+    return axiosClient.post(url, filters);
+  },
 
   // Xóa sản phẩm
   remove: (id) => {

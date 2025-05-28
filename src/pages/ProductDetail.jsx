@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import './ProductDetail.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,7 @@ import cartService from '../services/cartService';
 
 function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
@@ -58,28 +59,52 @@ const token = userData.acces_token;
     fetchProduct();
   }, [id]);
 
-// const handleAddToCart = async () => {
-//   if (!userData.id) {
-//     alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng');
-//     return;
-//   }
+const handleAddToCart = async () => {
+  if (!userData.id) {
+    alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
+    navigate('/dang-nhap');
+    return;
+  }
 
-// //  const variantId = getVariantIdFromSelection(selectedColor, selectedSize);
+  if (!selectedSize) {
+    alert('Vui lòng chọn size');
+    return;
+  }
 
-// const cartItem = {
-//   userId: userData.id,
-//   productId: product.id,
-//   variantId: variantId,
-//   quantity,
-// };
-//   try {
-//     await cartService.create(cartItem);
-//     alert(`Đã thêm ${quantity} sản phẩm ${product.name} - Màu: ${selectedColor} - Size: ${selectedSize} vào giỏ hàng!`);
-//   } catch (error) {
-//     console.error('Lỗi thêm vào giỏ hàng:', error);
-//     alert('Thêm vào giỏ hàng thất bại, vui lòng thử lại.');
-//   }
-// };
+  if (!selectedColor) {
+    alert('Vui lòng chọn màu sắc');
+    return;
+  }
+
+  try {
+    // Tìm variant tương ứng với màu và size đã chọn
+    const selectedVariant = product.variants.find(
+      v => v.color === selectedColor && v.size === selectedSize
+    );
+
+    if (!selectedVariant) {
+      alert('Không tìm thấy biến thể sản phẩm phù hợp');
+      return;
+    }
+
+    const cartItem = {
+      userId: userData.id,
+      productId: product.id,
+      variantId: selectedVariant.id,
+      quantity: quantity
+    };
+
+    await cartService.create(cartItem);
+    alert(`Đã thêm ${quantity} sản phẩm ${product.name} - Màu: ${selectedColor} - Size: ${selectedSize} vào giỏ hàng!`);
+  } catch (error) {
+    console.error('Lỗi thêm vào giỏ hàng:', error);
+    if (error.response?.data?.message) {
+      alert(error.response.data.message);
+    } else {
+      alert('Thêm vào giỏ hàng thất bại, vui lòng thử lại.');
+    }
+  }
+};
 
   const handleRatingClick = (value) => {
     setRating(value);
@@ -205,7 +230,7 @@ const getUniqueColors = () => {
               </div>
              <button
                 className="add-to-cart-btn"
-                // onClick={handleAddToCart}
+                onClick={handleAddToCart}
                 disabled={product.stockQuantity === 0}
               >
                 <FontAwesomeIcon icon={faShoppingCart} />

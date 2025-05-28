@@ -100,48 +100,53 @@
 }
 
 .filter-colors {
-    display      : flex;
-    flex-wrap    : wrap;
-    gap          : 10px;
-    margin-bottom: 8px;
+    display  : flex;
+    flex-wrap: wrap;
+    gap      : 8px;
+    padding  : 10px 0;
 
     .filter-color {
-        width        : 24px;
-        height       : 24px;
+        width        : 30px;
+        height       : 30px;
         border-radius: 50%;
-        border       : 2px solid #eee;
         cursor       : pointer;
-        transition   : border 0.2s;
+        transition   : all 0.2s ease;
+        position     : relative;
 
         &:hover {
-            border: 2px solid #e41b13;
+            transform: scale(1.1);
+        }
+
+        &.selected {
+            transform: scale(1.1);
         }
     }
 }
 
 .filter-sizes {
-    display      : flex;
-    flex-wrap    : wrap;
-    gap          : 8px;
-    margin-bottom: 8px;
+    display  : flex;
+    flex-wrap: wrap;
+    gap      : 8px;
+    padding  : 10px 0;
 
     .filter-size {
-        width          : 38px;
-        height         : 32px;
+        width          : 40px;
+        height         : 40px;
         display        : flex;
         align-items    : center;
         justify-content: center;
         border         : 1px solid #ddd;
-        border-radius  : 3px;
-        font-size      : 14px;
-        color          : #222;
-        background     : #fff;
+        border-radius  : 4px;
         cursor         : pointer;
-        transition     : border 0.2s, color 0.2s;
+        transition     : all 0.2s ease;
+        font-size      : 14px;
 
         &:hover {
-            border: 1.5px solid #e41b13;
-            color : #e41b13;
+            border-color: #000;
+        }
+
+        &.selected {
+            font-weight: bold;
         }
     }
 }

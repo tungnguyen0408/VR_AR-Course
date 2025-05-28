@@ -21,13 +21,11 @@ const Home = () => {
         const resProducts = await productService.getByGender("MALE", 0, 10);
         setProducts(resProducts.data.result || resProducts.data.data?.result || []);
 
-        const resBestSellers = await productService.getBestSellers();
-        setBestSellers(resBestSellers.data?.data?.result);
-        console.log(resBestSellers.data?.data?.result);
+        const resBestSellers = await productService.getBestSellers(0, 8);
+        setBestSellers(resBestSellers.data?.data?.result || []);
 
-        const resDiscounted = await productService.getDiscounted();
-        setDiscounted(resDiscounted.data?.data?.result);
-        console.log(resDiscounted.data);
+        const resDiscounted = await productService.getDiscounted(0, 8);
+        setDiscounted(resDiscounted.data?.data?.result || []);
 
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -44,12 +42,22 @@ const Home = () => {
       </div>
       <BrandBanner /> 
       <div className="container my-4">
-        <h3>Top Sản Phẩm Bán Chạy</h3>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3>Top Sản Phẩm Bán Chạy</h3>
+          <Link to="/best-sellers" className="text-decoration-none text-primary">
+            Xem thêm <i className="fas fa-chevron-right"></i>
+          </Link>
+        </div>
         <ProductList products={bestSellers} category="Bán chạy" />
       </div>
 
       <div className="container my-4">
-        <h3>Top Sản Phẩm Giảm Giá</h3>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3>Top Sản Phẩm Giảm Giá</h3>
+          <Link to="/discounted" className="text-decoration-none text-primary">
+            Xem thêm <i className="fas fa-chevron-right"></i>
+          </Link>
+        </div>
         <ProductList products={discounted} category="Giảm giá" />
       </div>
 

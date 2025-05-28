@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../utils/ContextUser";
-import axios from "../config/config-axios";
 import cartService from "../services/cartService";
 import './Cart.scss';
 
@@ -9,25 +8,30 @@ const Cart = () => {
   const { user } = useContext(UserContext);
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-useEffect(() => {
-  const fetchCart = async () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const userId = userData?.id;
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!user?.id) {
+        setLoading(false);
+        return;
+      }
 
-    if (userId) {
       try {
-        const response = await cartService.getByUser(userId);
+        setLoading(true);
+        const response = await cartService.getByUser(user.id);
         setProducts(response.data.data || []);
       } catch (error) {
         console.error("Error fetching cart:", error);
+        alert("Không thể tải giỏ hàng. Vui lòng thử lại sau.");
+      } finally {
+        setLoading(false);
       }
-    }
-  };
-  fetchCart();
-}, []);
+    };
 
+    fetchCart();
+  }, [user]);
 
   const handleCheckboxChange = (item) => {
     const isSelected = selectedProducts.some(
@@ -46,31 +50,37 @@ useEffect(() => {
   const updateQuantity = async (index, newQuantity) => {
     if (newQuantity < 1) return;
     
-    const updatedProducts = [...products];
-    updatedProducts[index].quantity = newQuantity;
-    setProducts(updatedProducts);
-
     try {
+      const updatedProducts = [...products];
+      updatedProducts[index].quantity = newQuantity;
+      setProducts(updatedProducts);
+
       await cartService.update(updatedProducts[index].id, { quantity: newQuantity });
     } catch (error) {
       console.error("Error updating quantity:", error);
+      alert("Không thể cập nhật số lượng. Vui lòng thử lại sau.");
     }
   };
 
   const deleteCart = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to remove this item?");
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
     if (confirmDelete) {
       try {
-      await cartService.delete(id);
-
+        await cartService.delete(id);
         setProducts(products.filter(item => item.id !== id));
+        setSelectedProducts(selectedProducts.filter(item => item.id !== id));
       } catch (error) {
         console.error("Error deleting item:", error);
+        alert("Không thể xóa sản phẩm. Vui lòng thử lại sau.");
       }
     }
   };
 
   const handleCheckout = () => {
+    if (selectedProducts.length === 0) {
+      alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán");
+      return;
+    }
     navigate("/dat-hang", { state: { selectedProducts } });
   };
 
@@ -80,6 +90,30 @@ useEffect(() => {
     }, 0);
   };
 
+  if (loading) {
+    return <div className="loading">Đang tải giỏ hàng...</div>;
+  }
+
+  if (!user?.id) {
+    return (
+      <div className="cart-page">
+        <div className="cart-container">
+          <div className="empty-cart">
+            <i className="fa-solid fa-cart-shopping"></i>
+            <h2>Vui lòng đăng nhập</h2>
+            <p>Bạn cần đăng nhập để xem giỏ hàng của mình!</p>
+            <button 
+              className="continue-shopping-btn"
+              onClick={() => navigate('/dang-nhap')}
+            >
+              Đăng nhập
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="cart-page">
       <div className="cart-container">
@@ -88,11 +122,11 @@ useEffect(() => {
         {products.length > 0 ? (
           <>
             <div className="cart-header">
-              <div className="cart-header-item product">Product</div>
-              <div className="cart-header-item price">Price</div>
-              <div className="cart-header-item quantity">Quantity</div>
-              <div className="cart-header-item total">Total</div>
-              <div className="cart-header-item action">Action</div>
+              <div className="cart-header-item product">Sản phẩm</div>
+              <div className="cart-header-item price">Giá</div>
+              <div className="cart-header-item quantity">Số lượng</div>
+              <div className="cart-header-item total">Tổng</div>
+              <div className="cart-header-item action">Thao tác</div>
             </div>
 
             <div className="cart-items">
@@ -107,10 +141,11 @@ useEffect(() => {
                       )}
                       onChange={() => handleCheckboxChange(item)}
                     />
-                    <img src={item.product.image_url} alt={item.product.name} />
+                    <img src={item.product.imageUrls?.[0]} alt={item.product.name} />
                     <div className="product-info">
                       <h3>{item.product.name}</h3>
-                      <p className="size">Size: {item.size}</p>
+                      <p className="size">Size: {item.productVariant.size}</p>
+                      <p className="color">Màu: {item.productVariant.color}</p>
                     </div>
                   </div>
 
@@ -153,11 +188,11 @@ useEffect(() => {
             <div className="cart-summary">
               <div className="summary-details">
                 <div className="summary-row">
-                  <span>Selected Items:</span>
+                  <span>Sản phẩm đã chọn:</span>
                   <span>{selectedProducts.length}</span>
                 </div>
                 <div className="summary-row total">
-                  <span>Total Amount:</span>
+                  <span>Tổng tiền:</span>
                   <span>{calculateTotal().toLocaleString("vi-VN")} đ</span>
                 </div>
               </div>
@@ -166,7 +201,7 @@ useEffect(() => {
                 onClick={handleCheckout}
                 disabled={selectedProducts.length === 0}
               >
-                Proceed to Checkout
+                Thanh toán
               </button>
             </div>
           </>
@@ -174,7 +209,7 @@ useEffect(() => {
           <div className="empty-cart">
             <i className="fa-solid fa-cart-shopping"></i>
             <h2>Giỏ hàng trống</h2>
-            <p>Bạn chưa thêm sản phẩm nào vào giỏ hàng!.</p>
+            <p>Bạn chưa thêm sản phẩm nào vào giỏ hàng!</p>
             <button 
               className="continue-shopping-btn"
               onClick={() => navigate('/')}

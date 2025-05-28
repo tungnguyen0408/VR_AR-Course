@@ -23,8 +23,6 @@ function SortSelect({ value, onChange }) {
         <option value="price-desc">Giá giảm dần</option>
         <option value="az">Từ A-Z</option>
         <option value="za">Từ Z-A</option>
-        <option value="new-old">Mới đến cũ</option>
-        <option value="old-new">Cũ đến mới</option>
       </select>
     </>
   );

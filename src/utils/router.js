@@ -6,6 +6,7 @@ export const ROUTER = {
     FEMALE: "san-pham-nu",
     PRODUCT_DETAIL: "chi-tiet-san-pham/:id",
     BEST_SELLER: "san-pham-ban-chay",
+    DISCOUNTED: "san-pham-giam-gia",
     SHOPPING_CART: "gio-hang",
     SHOP_DETAIL: "cua-hang",
     ACCOUNT: "tai-khoan",
@@ -14,5 +15,6 @@ export const ROUTER = {
     LOGIN_ACCOUNT: "dang-nhap-tai-khoan",
     REGISTER_ACCOUNT: "dang-ky-tai-khoan",
     HISTORY_PURCHASE: "lich-su-mua-hang",
+    ALL_PRODUCT: "tat-ca-san-pham",
   },
 };
