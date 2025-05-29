@@ -61,7 +61,10 @@ function ProductNew() {
         }
       } else {
         // Nếu không có filter, sử dụng API cũ
-        const response = await productApi.getNewProducts(pageForApi, itemsPerPage);
+        const response = await productApi.getNewProducts(
+          pageForApi,
+          itemsPerPage
+        );
         const responseData = response?.data?.data || response?.data || response;
         if (responseData) {
           products = responseData.result || [];

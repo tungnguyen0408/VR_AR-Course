@@ -59,49 +59,48 @@ const token = userData.acces_token;
     fetchProduct();
   }, [id]);
 
-const handleAddToCart = async () => {
+const addToCart = async () => {
   if (!userData.id) {
-    alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
-    navigate('/dang-nhap');
+    alert("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+    navigate("/dang-nhap");
     return;
   }
 
-  if (!selectedSize) {
-    alert('Vui lòng chọn size');
+  if (!selectedColor || !selectedSize) {
+    alert("Vui lòng chọn màu sắc và kích thước!");
     return;
   }
 
-  if (!selectedColor) {
-    alert('Vui lòng chọn màu sắc');
+  const selectedVariant = product.variants.find(
+    (variant) =>
+      variant.color === selectedColor && variant.size === selectedSize
+  );
+
+  if (!selectedVariant) {
+    alert("Không tìm thấy biến thể sản phẩm!");
     return;
   }
 
   try {
-    // Tìm variant tương ứng với màu và size đã chọn
-    const selectedVariant = product.variants.find(
-      v => v.color === selectedColor && v.size === selectedSize
-    );
-
-    if (!selectedVariant) {
-      alert('Không tìm thấy biến thể sản phẩm phù hợp');
-      return;
-    }
-
-    const cartItem = {
+    const response = await cartService.create({
       userId: userData.id,
       productId: product.id,
       variantId: selectedVariant.id,
       quantity: quantity
-    };
+    });
 
-    await cartService.create(cartItem);
-    alert(`Đã thêm ${quantity} sản phẩm ${product.name} - Màu: ${selectedColor} - Size: ${selectedSize} vào giỏ hàng!`);
+    if (response.data.success) {
+      alert("Thêm vào giỏ hàng thành công!");
+      navigate("/cart");
+    } else {
+      alert(response.data.message || "Thêm vào giỏ hàng thất bại!");
+    }
   } catch (error) {
-    console.error('Lỗi thêm vào giỏ hàng:', error);
+    console.error("Error adding to cart:", error);
     if (error.response?.data?.message) {
       alert(error.response.data.message);
     } else {
-      alert('Thêm vào giỏ hàng thất bại, vui lòng thử lại.');
+      alert("Không thể thêm vào giỏ hàng. Vui lòng thử lại sau!");
     }
   }
 };
@@ -230,7 +229,7 @@ const getUniqueColors = () => {
               </div>
              <button
                 className="add-to-cart-btn"
-                onClick={handleAddToCart}
+                onClick={addToCart}
                 disabled={product.stockQuantity === 0}
               >
                 <FontAwesomeIcon icon={faShoppingCart} />

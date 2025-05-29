@@ -1,0 +1,190 @@
+.account-page {
+    padding         : 2rem;
+    min-height      : calc(100vh - 80px);
+    background-color: #f5f5f5;
+
+    .account-container {
+        max-width : 1200px;
+        margin    : 0 auto;
+        display   : flex;
+        gap       : 2rem;
+        min-height: calc(100vh - 120px);
+    }
+
+    .account-sidebar {
+        width        : 280px;
+        background   : white;
+        border-radius: 8px;
+        padding      : 1.5rem;
+        box-shadow   : 0 2px 4px rgba(0, 0, 0, 0.1);
+        height       : fit-content;
+
+        .user-info {
+            text-align    : center;
+            padding-bottom: 1.5rem;
+            border-bottom : 1px solid #eee;
+            margin-bottom : 1.5rem;
+
+            .avatar {
+                width          : 80px;
+                height         : 80px;
+                background     : #f0f0f0;
+                border-radius  : 50%;
+                display        : flex;
+                align-items    : center;
+                justify-content: center;
+                margin         : 0 auto 1rem;
+
+                i {
+                    font-size: 2rem;
+                    color    : #666;
+                }
+            }
+
+            h3 {
+                margin   : 0;
+                font-size: 1.2rem;
+                color    : #333;
+            }
+
+            p {
+                margin   : 0.5rem 0 0;
+                color    : #666;
+                font-size: 0.9rem;
+            }
+        }
+
+        .account-nav {
+            display       : flex;
+            flex-direction: column;
+            gap           : 0.5rem;
+
+            .nav-item {
+                display      : flex;
+                align-items  : center;
+                gap          : 0.75rem;
+                padding      : 0.75rem 1rem;
+                border       : none;
+                background   : none;
+                width        : 100%;
+                text-align   : left;
+                color        : #666;
+                border-radius: 4px;
+                cursor       : pointer;
+                transition   : all 0.2s;
+
+                i {
+                    font-size: 1.1rem;
+                }
+
+                &:hover {
+                    background: #f5f5f5;
+                    color     : #333;
+                }
+
+                &.active {
+                    background : #e3f2fd;
+                    color      : #1976d2;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .account-content {
+        flex         : 1;
+        background   : white;
+        border-radius: 8px;
+        padding      : 2rem;
+        box-shadow   : 0 2px 4px rgba(0, 0, 0, 0.1);
+        min-height   : 200px;
+
+        .profile-section,
+        .change-password-section {
+            padding      : 1.5rem;
+            border       : 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .section-header {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            margin-bottom  : 1.5rem;
+            padding-bottom : 1rem;
+            border-bottom  : 1px solid #eee;
+
+            h2 {
+                margin   : 0;
+                font-size: 1.5rem;
+                color    : #333;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+
+            label {
+                display      : block;
+                margin-bottom: 0.4rem;
+                color        : #555;
+                font-weight  : 500;
+                font-size    : 0.95rem;
+            }
+
+            input {
+                width        : 100%;
+                padding      : 0.8rem;
+                border       : 1px solid #ccc;
+                border-radius: 4px;
+                font-size    : 1rem;
+                transition   : border-color 0.2s;
+
+                &:focus {
+                    outline     : none;
+                    border-color: #1976d2;
+                    box-shadow  : 0 0 0 0.1rem rgba(25, 118, 210, 0.25);
+                }
+
+                &:disabled {
+                    background: #f0f0f0;
+                    cursor    : not-allowed;
+                    color     : #777;
+                }
+            }
+        }
+
+        .edit-button {
+            padding      : 0.6rem 1.2rem;
+            border       : 1px solid #ccc;
+            background   : white;
+            border-radius: 4px;
+            cursor       : pointer;
+            transition   : all 0.2s;
+            font-size    : 0.9rem;
+
+            &:hover {
+                background: #f0f0f0;
+            }
+        }
+
+        .save-button {
+            display      : block;
+            width        : auto;
+            margin-top   : 2rem;
+            padding      : 0.8rem 2rem;
+            background   : #1976d2;
+            color        : white;
+            border       : none;
+            border-radius: 4px;
+            cursor       : pointer;
+            transition   : all 0.2s;
+            font-size    : 1rem;
+            font-weight  : 500;
+
+            &:hover {
+                background: #1565c0;
+            }
+        }
+    }
+}

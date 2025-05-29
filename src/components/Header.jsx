@@ -22,7 +22,7 @@ function Header() {
     localStorage.removeItem("user");
     Cookies.remove("access_token");
     setIsLogin(false);
-    navigate("/dang-nhap");
+    navigate("/dang-nhap-tai-khoan");
   };
   const handleSearchSubmit = (e) => {
     e.preventDefault();

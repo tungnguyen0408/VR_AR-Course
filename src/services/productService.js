@@ -25,8 +25,8 @@ const productApi = {
   },
 
   // Lấy sản phẩm mới nhất
-  getNewProducts: () => {
-    const url = "/products/newest";
+  getNewProducts: (page, size) => {
+    const url = `/products/newest?page=${page}&size=${size}`;
     return axiosClient.get(url);
   },
 
@@ -83,7 +83,7 @@ const productApi = {
 
   // Add this to your existing productApi object
   search: (query) => {
-    const url = `/products/search?q=${encodeURIComponent(query)}`;
+    const url = `/products/search?keyword=${encodeURIComponent(query)}`;
     return axiosClient.get(url);
   },
 };

@@ -1,23 +1,51 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cartService from '../services/cartService';
+import { UserContext } from "../utils/ContextUser";
 import './ProductCard.scss';
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
-  const userData = JSON.parse(localStorage.getItem('user') || '{}');
+  const { user, updateCartNumber } = useContext(UserContext);
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
     
-    if (!userData.id) {
+    if (!user?.id) {
       alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
-      navigate('/dang-nhap');
+      navigate('/dang-nhap-tai-khoan');
       return;
     }
 
-    // Chuyển hướng đến trang chi tiết để chọn variant
-    navigate(`/chi-tiet-san-pham/${product.id}`);
+    if (!product.productVariants || product.productVariants.length === 0) {
+        alert("Sản phẩm không có biến thể nào để thêm vào giỏ hàng.");
+        return;
+    }
+
+    const firstVariant = product.productVariants[0];
+    const productVariantId = firstVariant.id;
+    const quantity = 1;
+
+    try {
+      const response = await cartService.create({
+        userId: user.id,
+        productVariantId: productVariantId,
+        quantity: quantity
+      });
+
+      if (response.data.status === 200) {
+        alert('Sản phẩm đã được thêm vào giỏ hàng!');
+        if (updateCartNumber) {
+            updateCartNumber();
+        }
+      } else {
+        alert(response.data.message || 'Không thể thêm sản phẩm vào giỏ hàng.');
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+       const errorMessage = error.response?.data?.message || "Không thể thêm sản phẩm vào giỏ hàng.";
+      alert(errorMessage);
+    }
   };
 
   const handleViewDetail = () => {
@@ -44,6 +72,7 @@ const ProductCard = ({ product }) => {
             className="action-btn add-cart"
             title="Thêm vào giỏ hàng"
             onClick={handleAddToCart}
+            type="button"
           >
             <i className="fa fa-shopping-cart"></i>
           </button>

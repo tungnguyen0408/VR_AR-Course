@@ -5,17 +5,20 @@ const filterService = {
   filterProducts: (filters, page = 0, size = 9) => {
     const url = `/v1/filter?page=${page}&size=${size}`;
     const requestBody = {
-      brands: filters.brands.length > 0 ? filters.brands : undefined,
-      colors: filters.colors.length > 0 ? filters.colors : undefined,
+      brands: filters.brands?.length > 0 ? filters.brands : undefined,
+      colors: filters.colors?.length > 0 ? filters.colors : undefined,
       sizes:
-        filters.sizes.length > 0
+        filters.sizes?.length > 0
           ? filters.sizes.map((size) => Number(size))
           : undefined,
       minPrice: Number(filters.minPrice) || 0,
       maxPrice: Number(filters.maxPrice) || 10000000,
-      gender: filters.gender || "MALE",
+      gender: filters.gender || undefined,
       sortBy: filters.sortBy || "name",
       sortDirection: filters.sortDirection || "asc",
+      isBestseller: filters.isBestseller || undefined,
+      isNew: filters.isNew || undefined,
+      isFeatured: filters.isFeatured || undefined,
     };
 
     // Xóa các trường undefined

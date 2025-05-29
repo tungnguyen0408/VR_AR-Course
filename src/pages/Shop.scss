@@ -1,0 +1,15 @@
+.store-info {
+    .store-image {
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+        margin         : 0 auto 1.5rem;
+
+        img {
+            display  : block;
+            max-width: 100%;
+            height   : auto;
+            min-width: 450px !important;
+        }
+    }
+}

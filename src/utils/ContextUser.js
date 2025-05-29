@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
       if (user.id && user) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/cart/get/number/${user.id}`
+            `http://localhost:8080/api/cart/count/${user.id}`
           );
           setNumber(response.data.data);
         } catch (error) {

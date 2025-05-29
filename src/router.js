@@ -16,6 +16,7 @@ import History from "./pages/History";
 import ProductNew from "./pages/ProductNew";
 import Discover from "./pages/Discover";
 import ProductByType from "./pages/ProductByType";
+import Checkout from "./pages/Checkout";
 
 const renderUserRouter = () => {
   const userRouters = [
@@ -86,6 +87,10 @@ const renderUserRouter = () => {
     {
       path: ROUTER.USER.ALL_PRODUCT,
       component: <ProductByType type="all" />,
+    },
+    {
+      path: ROUTER.USER.ORDER,
+      component: <Checkout />,
     },
   ];
 

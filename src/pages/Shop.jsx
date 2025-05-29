@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import '../pages/Shop.scss';
 
 const Shop = () => {
   return (
@@ -18,7 +19,6 @@ const Shop = () => {
                       src="./images/logo.png" 
                       alt="Cửa hàng của chúng tôi" 
                       className="img-fluid rounded"
-                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                 </div>

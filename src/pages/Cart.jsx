@@ -6,27 +6,24 @@ import './Cart.scss';
 
 const Cart = () => {
   const { user } = useContext(UserContext);
-  const [products, setProducts] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (!user?.id) {
-        setLoading(false);
-        return;
-      }
+      if (!user?.id) return;
 
       try {
-        setLoading(true);
         const response = await cartService.getByUser(user.id);
-        setProducts(response.data.data || []);
+        if (response.data.status === 200) {
+          setCartItems(response.data.data.items || []);
+        } else {
+          console.error("Error fetching cart:", response.data.message);
+        }
       } catch (error) {
         console.error("Error fetching cart:", error);
         alert("Không thể tải giỏ hàng. Vui lòng thử lại sau.");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -34,65 +31,84 @@ const Cart = () => {
   }, [user]);
 
   const handleCheckboxChange = (item) => {
-    const isSelected = selectedProducts.some(
+    const isSelected = selectedItems.some(
       (selectedItem) => selectedItem.id === item.id
     );
 
     if (isSelected) {
-      setSelectedProducts((prevSelected) =>
+      setSelectedItems((prevSelected) =>
         prevSelected.filter((selectedItem) => selectedItem.id !== item.id)
       );
     } else {
-      setSelectedProducts((prevSelected) => [...prevSelected, item]);
+      setSelectedItems((prevSelected) => [...prevSelected, item]);
     }
   };
 
-  const updateQuantity = async (index, newQuantity) => {
+  const updateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
     
     try {
-      const updatedProducts = [...products];
-      updatedProducts[index].quantity = newQuantity;
-      setProducts(updatedProducts);
-
-      await cartService.update(updatedProducts[index].id, { quantity: newQuantity });
+      const response = await cartService.update(itemId, { quantity: newQuantity });
+      if (response.data.status === 200) {
+        setCartItems(prevItems => 
+          prevItems.map(item => 
+            item.id === itemId ? { ...item, quantity: newQuantity } : item
+          )
+        );
+      } else {
+        alert(response.data.message || "Không thể cập nhật số lượng");
+      }
     } catch (error) {
       console.error("Error updating quantity:", error);
-      alert("Không thể cập nhật số lượng. Vui lòng thử lại sau.");
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Không thể cập nhật số lượng. Vui lòng thử lại sau.");
+      }
     }
   };
 
-  const deleteCart = async (id) => {
+  const deleteCartItem = async (itemId) => {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?");
     if (confirmDelete) {
       try {
-        await cartService.delete(id);
-        setProducts(products.filter(item => item.id !== id));
-        setSelectedProducts(selectedProducts.filter(item => item.id !== id));
+        console.log("Attempting to delete item with ID:", itemId);
+        const response = await cartService.deleteItem(itemId);
+        console.log("Delete API response:", response);
+
+        if (response.data.status === 200) {
+          console.log("Item deleted successfully.");
+          setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+          setSelectedItems(prevSelected => prevSelected.filter(item => item.id !== itemId));
+          console.log("Cart items and selected items states updated.");
+        } else {
+          console.error("Error response from delete API:", response.data.message);
+          alert(response.data.message || "Không thể xóa sản phẩm");
+        }
       } catch (error) {
         console.error("Error deleting item:", error);
-        alert("Không thể xóa sản phẩm. Vui lòng thử lại sau.");
+        if (error.response?.data?.message) {
+          alert(error.response.data.message);
+        } else {
+          alert("Không thể xóa sản phẩm. Vui lòng thử lại sau.");
+        }
       }
     }
   };
 
   const handleCheckout = () => {
-    if (selectedProducts.length === 0) {
+    if (selectedItems.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán");
       return;
     }
-    navigate("/dat-hang", { state: { selectedProducts } });
+    navigate("/dat-hang", { state: { selectedItems } });
   };
 
   const calculateTotal = () => {
-    return selectedProducts.reduce((total, item) => {
+    return selectedItems.reduce((total, item) => {
       return total + (item.product.price * item.quantity);
     }, 0);
   };
-
-  if (loading) {
-    return <div className="loading">Đang tải giỏ hàng...</div>;
-  }
 
   if (!user?.id) {
     return (
@@ -119,7 +135,7 @@ const Cart = () => {
       <div className="cart-container">
         <h1 className="cart-title">Giỏ hàng</h1>
         
-        {products.length > 0 ? (
+        {cartItems.length > 0 ? (
           <>
             <div className="cart-header">
               <div className="cart-header-item product">Sản phẩm</div>
@@ -130,13 +146,13 @@ const Cart = () => {
             </div>
 
             <div className="cart-items">
-              {products.map((item, index) => (
-                <div key={index} className="cart-item">
+              {cartItems.map((item) => (
+                <div key={item.id} className="cart-item">
                   <div className="cart-item-product">
                     <input
                       type="checkbox"
                       className="cart-checkbox"
-                      checked={selectedProducts.some(
+                      checked={selectedItems.some(
                         (selectedItem) => selectedItem.id === item.id
                       )}
                       onChange={() => handleCheckboxChange(item)}
@@ -156,14 +172,14 @@ const Cart = () => {
                   <div className="cart-item-quantity">
                     <button 
                       className="quantity-btn"
-                      onClick={() => updateQuantity(index, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
                     >
                       <i className="fa-solid fa-minus"></i>
                     </button>
                     <span className="quantity-number">{item.quantity}</span>
                     <button 
                       className="quantity-btn"
-                      onClick={() => updateQuantity(index, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
                       <i className="fa-solid fa-plus"></i>
                     </button>
@@ -176,7 +192,7 @@ const Cart = () => {
                   <div className="cart-item-action">
                     <button 
                       className="delete-btn"
-                      onClick={() => deleteCart(item.id)}
+                      onClick={() => deleteCartItem(item.id)}
                     >
                       <i className="fa-solid fa-trash-can"></i>
                     </button>
@@ -189,7 +205,7 @@ const Cart = () => {
               <div className="summary-details">
                 <div className="summary-row">
                   <span>Sản phẩm đã chọn:</span>
-                  <span>{selectedProducts.length}</span>
+                  <span>{selectedItems.length}</span>
                 </div>
                 <div className="summary-row total">
                   <span>Tổng tiền:</span>
@@ -199,7 +215,7 @@ const Cart = () => {
               <button
                 className="checkout-btn"
                 onClick={handleCheckout}
-                disabled={selectedProducts.length === 0}
+                disabled={selectedItems.length === 0}
               >
                 Thanh toán
               </button>
