@@ -19,17 +19,30 @@ const Login = () => {
       const response = await authService.login(user);
 
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data.data));
-        const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
-        localStorage.removeItem("redirectAfterLogin");
-        navigate(redirectPath);
+        const userData = response.data.data;
+        
+        // Set admin role for username "nguyenbach"
+        if (username === "nguyenbach") {
+          userData.role = "admin";
+        }
+        
+        localStorage.setItem("user", JSON.stringify(userData));
+        
+        // Check user role and redirect accordingly
+        if (userData.role === "admin") {
+          navigate("/admin");
+        } else {
+          const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+          localStorage.removeItem("redirectAfterLogin");
+          navigate(redirectPath);
+        }
 
         window.location.reload();
       } else {
-        window.alert("that bai");
+        window.alert("Đăng nhập thất bại");
       }
     } catch (error) {
-      window.alert("that bai");
+      window.alert("Đăng nhập thất bại");
     }
   };
 

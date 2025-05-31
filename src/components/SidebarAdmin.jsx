@@ -48,9 +48,9 @@ const SidebarAdmin = () => {
   return (
     <div className="sidebar-admin">
       <div className="sidebar-header">
-        <div className="logo">
+        {/* <div className="logo">
           <img src="/logo.png" alt="Logo" className="logo-img" />
-        </div>
+        </div> */}
         <div className="admin-info">
           {/* <img
             src="/avatar-admin.png"

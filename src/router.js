@@ -2,7 +2,7 @@ import { ROUTER } from "./utils/router";
 import Home from "./pages/Home";
 import MenShoes from "./pages/MenShoes";
 import MasterLayout from "./pages/masterLayout";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import WomenShoes from "./pages/WomenShoes";
 import ProductDetail from "./pages/ProductDetail";
 import BestSeller from "./pages/BestSeller";
@@ -23,6 +23,16 @@ import ManagementProduct from "./pages/admin/ManagementProduct";
 import ManagementCategory from "./pages/admin/ManagementCategory";
 import ManagementOrder from "./pages/admin/ManagementOrder";
 import ManagementCustomer from "./pages/admin/ManagementCustomer";
+
+const ProtectedAdminRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user || user.role !== "admin") {
+    return <Navigate to="/dang-nhap-tai-khoan" replace />;
+  }
+
+  return children;
+};
 
 const renderUserRouter = () => {
   const userRouters = [
@@ -140,11 +150,13 @@ const renderAdminRouter = () => {
   ];
 
   return (
-    <Routes>
-      {adminRouters.map((item, key) => (
-        <Route key={key} path={item.path} element={item.component}></Route>
-      ))}
-    </Routes>
+    <ProtectedAdminRoute>
+      <Routes>
+        {adminRouters.map((item, key) => (
+          <Route key={key} path={item.path} element={item.component}></Route>
+        ))}
+      </Routes>
+    </ProtectedAdminRoute>
   );
 };
 
