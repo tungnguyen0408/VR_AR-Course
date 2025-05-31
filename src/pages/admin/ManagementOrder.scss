@@ -1,0 +1,128 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+
+  .management-content {
+    flex: 1;
+    margin-left: 20px;
+    transition: margin-left 0.3s ease;
+    padding: 24px;
+  }
+}
+
+.management-card {
+  .management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+  }
+
+  .ant-table {
+    .ant-table-thead > tr > th {
+      background-color: #fafafa;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .ant-table-tbody > tr > td {
+      color: #666;
+    }
+
+    .ant-badge {
+      .ant-badge-status-text {
+        color: #666;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .order-details {
+    .ant-descriptions {
+      .ant-descriptions-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .ant-descriptions-item-label {
+        font-weight: 500;
+        color: #1a1a1a;
+        background-color: #fafafa;
+      }
+
+      .ant-descriptions-item-content {
+        color: #666;
+      }
+    }
+
+    .order-items {
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+      }
+
+      .ant-table {
+        .ant-table-thead > tr > th {
+          background-color: #fafafa;
+          font-weight: 500;
+        }
+
+        .ant-table-tbody > tr > td {
+          color: #666;
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media screen and (max-width: 768px) {
+  .admin-layout {
+    .management-content {
+      margin-left: 80px;
+      padding: 16px;
+    }
+  }
+
+  .management-card {
+    .management-header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .order-details {
+      .ant-descriptions {
+        .ant-descriptions-item {
+          padding: 8px !important;
+        }
+      }
+
+      .order-items {
+        .ant-table {
+          .ant-table-thead > tr > th,
+          .ant-table-tbody > tr > td {
+            padding: 8px !important;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+} 

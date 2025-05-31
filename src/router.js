@@ -2,7 +2,7 @@ import { ROUTER } from "./utils/router";
 import Home from "./pages/Home";
 import MenShoes from "./pages/MenShoes";
 import MasterLayout from "./pages/masterLayout";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import WomenShoes from "./pages/WomenShoes";
 import ProductDetail from "./pages/ProductDetail";
 import BestSeller from "./pages/BestSeller";
@@ -17,6 +17,11 @@ import ProductNew from "./pages/ProductNew";
 import Discover from "./pages/Discover";
 import ProductByType from "./pages/ProductByType";
 import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/admin/Dashboard";
+import ManagementProduct from "./pages/admin/ManagementProduct";
+import ManagementCategory from "./pages/admin/ManagementCategory";
+import ManagementOrder from "./pages/admin/ManagementOrder";
+import ManagementCustomer from "./pages/admin/ManagementCustomer";
 
 const renderUserRouter = () => {
   const userRouters = [
@@ -105,7 +110,44 @@ const renderUserRouter = () => {
   );
 };
 
+const renderAdminRouter = () => {
+  const adminRouters = [
+    {
+      path: ROUTER.ADMIN.DASHBOARD,
+      component: <Dashboard></Dashboard>,
+    },
+    {
+      path: ROUTER.ADMIN.PRODUCTS,
+      component: <ManagementProduct></ManagementProduct>,
+    },
+    {
+      path: ROUTER.ADMIN.CATEGORIES,
+      component: <ManagementCategory></ManagementCategory>,
+    },
+    {
+      path: ROUTER.ADMIN.ORDERS,
+      component: <ManagementOrder></ManagementOrder>,
+    },
+    {
+      path: ROUTER.ADMIN.CUSTOMERS,
+      component: <ManagementCustomer></ManagementCustomer>,
+    },
+  ];
+
+  return (
+    <Routes>
+      {adminRouters.map((item, key) => (
+        <Route key={key} path={item.path} element={item.component}></Route>
+      ))}
+    </Routes>
+  );
+};
+
 const RouterCustom = () => {
+  const location = useLocation();
+  if (location.pathname.startsWith("/admin")) {
+    return renderAdminRouter();
+  }
   return renderUserRouter();
 };
 

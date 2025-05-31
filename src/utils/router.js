@@ -18,4 +18,11 @@ export const ROUTER = {
     ALL_PRODUCT: "tat-ca-san-pham",
     ORDER: "dat-hang",
   },
+  ADMIN: {
+    DASHBOARD: "/admin",
+    PRODUCTS: "/admin/products",
+    CATEGORIES: "/admin/categories",
+    ORDERS: "/admin/orders",
+    CUSTOMERS: "/admin/customers",
+  },
 };
