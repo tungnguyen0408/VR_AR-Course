@@ -19,4 +19,11 @@ export const ROUTER = {
     ORDER: "dat-hang",
     AR: "ar",
   },
+  ADMIN: {
+    DASHBOARD: "/admin",
+    PRODUCTS: "/admin/products",
+    CATEGORIES: "/admin/categories",
+    ORDERS: "/admin/orders",
+    CUSTOMERS: "/admin/customers",
+  },
 };

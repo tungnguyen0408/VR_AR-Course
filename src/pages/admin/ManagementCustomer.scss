@@ -1,0 +1,232 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+
+  .management-content {
+    flex: 1;
+    margin-left: 20px;
+    transition: margin-left 0.3s ease;
+    padding: 24px;
+  }
+}
+
+.management-card {
+  .management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+  }
+
+  .ant-table {
+    .ant-table-thead > tr > th {
+      background-color: #fafafa;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .ant-table-tbody > tr > td {
+      color: #666;
+    }
+
+    .ant-tag {
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  }
+
+  .ant-modal {
+    .ant-form-item-label > label {
+      font-weight: 500;
+    }
+
+    .ant-select {
+      width: 100%;
+    }
+  }
+
+  .customer-details {
+    .detail-item {
+      display: flex;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
+
+      &:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .label {
+        width: 150px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+
+      .value {
+        flex: 1;
+        color: #666;
+
+        .ant-tag {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.customer-view-modal .ant-modal-content {
+  border-radius: 16px;
+  padding: 0;
+}
+
+.customer-details-modal {
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+}
+
+.customer-avatar-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 18px;
+}
+
+.customer-avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1890ff;
+  background: #f5f5f5;
+}
+
+.customer-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.customer-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+}
+
+.customer-email {
+  font-size: 14px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.customer-status-tag {
+  margin-top: 4px;
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.customer-info-list {
+  width: 100%;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  background: #fafbfc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  min-width: 0;
+}
+
+.info-label {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-value {
+  font-size: 15px;
+  color: #222;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+// Responsive styles
+@media screen and (max-width: 768px) {
+  .admin-layout {
+    .management-content {
+      margin-left: 80px;
+      padding: 16px;
+    }
+  }
+
+  .management-card {
+    .management-header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .customer-details {
+      .detail-item {
+        flex-direction: column;
+        gap: 8px;
+
+        .label {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .customer-details-modal {
+    padding: 16px 4px 16px 4px;
+  }
+  .customer-avatar-block {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  .customer-info-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+} 
