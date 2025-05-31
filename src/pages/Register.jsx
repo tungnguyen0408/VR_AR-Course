@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import userService from "../services/userService";
-import './Register.scss';
+import "./Register.scss";
 
 const Register = () => {
   const [password, setPassword] = useState("");
@@ -23,10 +23,11 @@ const Register = () => {
 
     try {
       const response = await userService.create(user);
-      if (response.status === 200) {
+      console.log('API Response:', response);
+      if (response.status === 201) {
         window.alert("Đăng kí thành công");
         navigate("/dang-nhap-tai-khoan");
-      } 
+      }
     } catch (error) {
       console.error("Lỗi:", error);
       window.alert("that bai");
@@ -40,13 +41,15 @@ const Register = () => {
       </div>
       <div className="register-form-container">
         <div className="register-breadcrumb">
-          <span>Trang chủ</span> <span className="sep">›</span> <span className="active">Đăng ký tài khoản</span>
+          <span>Trang chủ</span> <span className="sep">›</span>{" "}
+          <span className="active">Đăng ký tài khoản</span>
         </div>
         <h2 className="register-title">ĐĂNG KÝ TÀI KHOẢN</h2>
         <div className="register-desc">
           <b>Bạn chưa có tài khoản, vui lòng đăng ký</b>
           <p>
-            Hãy điền chính xác các thông tin dưới đây để đảm bảo nhận đầy đủ mọi quyền lợi, thông tin ưu đãi dành riêng cho bạn.
+            Hãy điền chính xác các thông tin dưới đây để đảm bảo nhận đầy đủ mọi
+            quyền lợi, thông tin ưu đãi dành riêng cho bạn.
           </p>
         </div>
         <form className="register-form" onSubmit={handleRegister}>
@@ -62,16 +65,16 @@ const Register = () => {
             </div>
             <div className="register-field">
               <label>Số điện thoại</label>
-             <input
-              className="form-control"
-              type="text"
-              placeholder="Số điện thoại"
-              onChange={(e) => setPhone(e.target.value)}
-            />
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Số điện thoại"
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </div>
           </div>
           <div className="register-row">
-            <div className="register-field" style={{width: "100%"}}>
+            <div className="register-field" style={{ width: "100%" }}>
               <label>Email</label>
               <input
                 className="form-control"
@@ -82,7 +85,7 @@ const Register = () => {
             </div>
           </div>
           <div className="register-row">
-            <div className="register-field" style={{width: "100%"}}>
+            <div className="register-field" style={{ width: "100%" }}>
               <label>Mật khẩu</label>
               <input
                 className="form-control"
@@ -94,7 +97,7 @@ const Register = () => {
           </div>
           <div className="register-actions">
             <button className="btn btn-danger register-btn" type="submit">
-              <i className="fa fa-pen-to-square" style={{marginRight: 8}}></i>
+              <i className="fa fa-pen-to-square" style={{ marginRight: 8 }}></i>
               Đăng ký ngay
             </button>
             <span className="register-login-link">

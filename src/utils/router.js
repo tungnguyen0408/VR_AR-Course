@@ -17,5 +17,6 @@ export const ROUTER = {
     HISTORY_PURCHASE: "lich-su-mua-hang",
     ALL_PRODUCT: "tat-ca-san-pham",
     ORDER: "dat-hang",
+    AR: "ar",
   },
 };

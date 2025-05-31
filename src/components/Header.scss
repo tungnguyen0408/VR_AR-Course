@@ -96,3 +96,12 @@
     margin-right: 8px;
     color       : #888;
 }
+
+.main-header {
+    position: fixed;
+    top     : 0;
+    left    : 0;
+    width   : 100%;
+    z-index : 1000;
+    /* Ensure it stays on top */
+}

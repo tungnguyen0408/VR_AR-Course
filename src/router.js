@@ -17,6 +17,7 @@ import ProductNew from "./pages/ProductNew";
 import Discover from "./pages/Discover";
 import ProductByType from "./pages/ProductByType";
 import Checkout from "./pages/Checkout";
+import AR from "./pages/AR";
 
 const renderUserRouter = () => {
   const userRouters = [
@@ -91,6 +92,10 @@ const renderUserRouter = () => {
     {
       path: ROUTER.USER.ORDER,
       component: <Checkout />,
+    },
+    {
+      path: ROUTER.USER.AR,
+      component: <AR />,
     },
   ];
 

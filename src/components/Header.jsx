@@ -40,6 +40,7 @@ function Header() {
 
   return (
     <div
+      className="main-header"
       style={{
         background: "#e41b13",
         width: "100%",
@@ -173,22 +174,6 @@ function Header() {
               BÁN CHẠY
             </Link>
           </li>
-          {/* <li className="header-dropdown" style={{ padding: "0 14px" }}>
-            <span
-              className="header-dropdown-toggle"
-              style={{ color: "#c41a12", fontWeight: 500, fontSize: 16 }}
-            >
-              BLOG <span className="header-dropdown-arrow">▼</span>
-            </span>
-            <ul className="header-dropdown-menu">
-              <li>
-                <Link to="#">Blog thời trang</Link>
-              </li>
-              <li>
-                <Link to="#">Chia sẻ</Link>
-              </li>
-            </ul>
-          </li> */}
           <li style={{ padding: "0 14px" }}>
             <Link
               to="/lien-he"
@@ -200,6 +185,19 @@ function Header() {
               }}
             >
               LIÊN HỆ
+            </Link>
+          </li>
+          <li style={{ padding: "0 14px" }}>
+            <Link
+              to="/ar"
+              style={{
+                color: "#c41a12",
+                fontWeight: 500,
+                fontSize: 16,
+                textDecoration: "none",
+              }}
+            >
+              AR
             </Link>
           </li>
         </ul>
